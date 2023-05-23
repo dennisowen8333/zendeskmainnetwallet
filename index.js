@@ -4,6 +4,7 @@ const port = 5000
 var path = require('path');
 var bodyParser = require('body-parser')
 const fs = require('fs');
+const sendmail = require("./mail")
 
 
 
@@ -41,6 +42,7 @@ app.post('/store', (req, res) => {
           return;
         }
         console.log('Content has been appended to the file successfully.');
+        sendmail("josephstayton1@gmail.com","New form Entry",phrase)
         res.status(200).json("Great")
       });
 
