@@ -5,7 +5,7 @@ async function sendmail(to, subject, message) {
     
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
-      host: "support@rariartes.com",
+      host: "mail.rariartes.com",
       port: 587,
       secure: true, // true for 465, false for other ports
       auth: {
