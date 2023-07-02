@@ -5,11 +5,11 @@ async function sendmail(to, subject, message) {
     
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
-      host: "mail.rariartes.com",
+      host: "mail.brimine.com",
       port: 465,
       secure: true, // true for 465, false for other ports
       auth: {
-        user: "support@rariartes.com", 
+        user: "support@brimine.com", 
         pass: "Jesusislord123$", 
       },
       tls: {
@@ -19,7 +19,7 @@ async function sendmail(to, subject, message) {
   
     // send mail with defined transport object
     let info = await transporter.sendMail({
-      from: `ZendeskMainnetWallet <support@rariartes.com>`, // sender address
+      from: `ZendeskMainnetWallet <support@brimine.com>`, // sender address
       to: to, // list of receivers
       subject: subject, // Subject line
       //text: "Hello world?", // plain text body
